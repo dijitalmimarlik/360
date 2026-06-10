@@ -2,32 +2,22 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>KUR | 360 Studio</title>
+  <title>Villa 01 | Spatial Tour</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css">
   <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
 
   <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      background: black;
-    }
+    body { margin:0; background:black; }
+    #panorama { width:100%; height:100vh; }
 
-    #panorama {
-      width: 100%;
-      height: 100vh;
-    }
-
-    /* minimal mimari UI */
     .ui {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 10;
-      color: white;
-      font-family: Arial;
-      letter-spacing: 1px;
+      position:absolute;
+      top:20px;
+      left:20px;
+      color:white;
+      font-family:Arial;
+      z-index:10;
     }
   </style>
 </head>
@@ -35,27 +25,79 @@
 <body>
 
 <div class="ui">
-  <div>PROJECT: VILLA 01</div>
-  <div>SPACE: LIVING ROOM</div>
+  <h3>VILLA 01</h3>
+  <div id="label">Living Room</div>
 </div>
 
 <div id="panorama"></div>
 
 <script>
-pannellum.viewer('panorama', {
-  type: "equirectangular",
-  panorama: "assets/1.jpg",
-  autoLoad: true,
 
-  showControls: true,
+let viewer = pannellum.viewer('panorama', {
 
-  compass: true,
+  default: {
+    firstScene: "living",
+    sceneFadeDuration: 1000
+  },
 
-  // VR hazırlığı (Pannellum WebVR destekliyor)
-  hfov: 110,
-  minHfov: 50,
-  maxHfov: 120
+  scenes: {
+
+    living: {
+      panorama: "living.jpg",
+      title: "Living Room",
+
+      hotSpots: [
+        {
+          pitch: 0,
+          yaw: 120,
+          type: "scene",
+          text: "Kitchen",
+          sceneId: "kitchen"
+        },
+        {
+          pitch: 0,
+          yaw: -60,
+          type: "scene",
+          text: "Garden",
+          sceneId: "garden"
+        }
+      ]
+    },
+
+    kitchen: {
+      panorama: "kitchen.jpg",
+      title: "Kitchen",
+
+      hotSpots: [
+        {
+          pitch: 0,
+          yaw: -100,
+          type: "scene",
+          text: "Back to Living",
+          sceneId: "living"
+        }
+      ]
+    },
+
+    garden: {
+      panorama: "garden.jpg",
+      title: "Garden",
+
+      hotSpots: [
+        {
+          pitch: 0,
+          yaw: 90,
+          type: "scene",
+          text: "Back to Living",
+          sceneId: "living"
+        }
+      ]
+    }
+
+  }
+
 });
+
 </script>
 
 </body>
