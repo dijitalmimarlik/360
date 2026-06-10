@@ -2,68 +2,85 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Villa 01 | Plan + 360</title>
+<title>Villa 01 | 360 Plan System</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css">
 <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
 
 <style>
 body {
-  margin:0;
-  overflow:hidden;
-  background:black;
+  margin: 0;
+  overflow: hidden;
+  background: black;
+  font-family: Arial;
 }
 
+/* 360 viewer */
 #panorama {
-  width:100%;
-  height:100vh;
+  width: 100%;
+  height: 100vh;
 }
 
-/* PLAN OVERLAY */
+/* UI */
+.ui {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+  z-index: 10;
+}
+
+/* PLAN */
+#plan-wrapper {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 20;
+}
+
 #plan {
-  position:absolute;
-  bottom:20px;
-  left:20px;
-  width:220px;
-  opacity:0.9;
-  z-index:10;
+  width: 220px;
+  opacity: 0.9;
+  display: block;
 }
 
+/* PLAN NODES */
 .node {
-  position:absolute;
-  width:12px;
-  height:12px;
-  background:red;
-  border-radius:50%;
-  cursor:pointer;
-  border:2px solid white;
-}
-
-#container {
-  position:relative;
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: red;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div id="container">
-  <div id="panorama"></div>
+<div class="ui">
+  <div>VILLA 01</div>
+  <div id="label">Living Room</div>
+</div>
 
-  <!-- PLAN -->
-  <div id="plan-wrapper" style="position:absolute; bottom:20px; left:20px;">
-    <img id="plan" src="plan.png">
+<div id="panorama"></div>
 
-    <!-- NODELAR -->
-    <div class="node" style="top:40px; left:60px;" onclick="loadScene('living')"></div>
-    <div class="node" style="top:80px; left:140px;" onclick="loadScene('kitchen')"></div>
-    <div class="node" style="top:140px; left:90px;" onclick="loadScene('garden')"></div>
-  </div>
+<!-- PLAN -->
+<div id="plan-wrapper">
+  <img id="plan" src="plan.png">
+
+  <!-- NODE POSITIONS (plan üzerinde elle ayarlanır) -->
+  <div class="node" style="top:40px; left:60px;" onclick="go('living')"></div>
+  <div class="node" style="top:80px; left:140px;" onclick="go('kitchen')"></div>
+  <div class="node" style="top:140px; left:90px;" onclick="go('garden')"></div>
 </div>
 
 <script>
-
-let viewer = pannellum.viewer('panorama', {
+/* =========================
+   GLOBAL VIEWER (FIXED)
+========================= */
+window.viewer = pannellum.viewer('panorama', {
 
   default: {
     firstScene: "living",
@@ -95,13 +112,18 @@ let viewer = pannellum.viewer('panorama', {
     }
 
   }
-
 });
 
-function loadScene(scene){
-  viewer.loadScene(scene);
-}
+/* =========================
+   SCENE CHANGE FUNCTION
+========================= */
+function go(sceneName) {
+  window.viewer.loadScene(sceneName);
 
+  // UI label update (opsiyonel ama mimari sunum için önemli)
+  document.getElementById("label").innerText =
+    sceneName.charAt(0).toUpperCase() + sceneName.slice(1);
+}
 </script>
 
 </body>
