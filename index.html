@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Villa 01 | 360 Plan System</title>
+<title>KUR STUDIO | Villa 01</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css">
 <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
@@ -11,80 +11,209 @@
 body {
   margin: 0;
   overflow: hidden;
-  background: black;
-  font-family: Arial;
+  background: #0b0b0b;
+  font-family: Helvetica, Arial, sans-serif;
+  color: white;
 }
 
-/* 360 viewer */
+/* 360 */
 #panorama {
   width: 100%;
   height: 100vh;
 }
 
-/* UI */
-.ui {
+/* ================= BRAND ================= */
+.brand {
   position: absolute;
   top: 20px;
   left: 20px;
-  color: white;
-  z-index: 10;
+  z-index: 999;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: rgba(0,0,0,0.35);
+  padding: 10px 14px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
 }
 
-/* PLAN */
+.brand img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.brand .name {
+  font-size: 13px;
+  letter-spacing: 2px;
+  opacity: 0.9;
+}
+
+/* ================= PROJECT UI ================= */
+.ui {
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  z-index: 999;
+
+  background: rgba(0,0,0,0.35);
+  padding: 10px 14px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.ui .title {
+  font-size: 14px;
+  letter-spacing: 2px;
+  opacity: 1;
+}
+
+.ui .subtitle {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+/* ================= FULLSCREEN BUTTON ================= */
+.fullscreen-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  font-size: 12px;
+  letter-spacing: 1px;
+
+  backdrop-filter: blur(10px);
+  transition: 0.2s;
+}
+
+.fullscreen-btn:hover {
+  color: red;
+  border-color: red;
+}
+
+/* ================= PLAN ================= */
 #plan-wrapper {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  bottom: 24px;
+  left: 24px;
   z-index: 20;
 }
 
 #plan {
-  width: 220px;
-  opacity: 0.9;
-  display: block;
+  width: 200px;
 }
 
-/* PLAN NODES */
+/* PLAN DOTS */
 .node {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background: red;
-  border: 2px solid white;
   border-radius: 50%;
   cursor: pointer;
+  opacity: 0.85;
+}
+
+/* ================= BOTTOM NAV ================= */
+.bottom-nav {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+
+  display: flex;
+  gap: 50px;
+
+  font-size: 26px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 1px;
+
+  padding: 10px 25px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+}
+
+.bottom-nav span {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.bottom-nav span:hover {
+  opacity: 1;
+  color: red;
+}
+
+.bottom-nav .active {
+  opacity: 1;
+  color: red;
 }
 </style>
 </head>
 
 <body>
 
-<div class="ui">
-  <div>VILLA 01</div>
-  <div id="label">Living Room</div>
+<!-- BRAND -->
+<div class="brand">
+  <img src="logo.png">
+  <div class="name">KUR STUDIO</div>
 </div>
 
+<!-- PROJECT UI -->
+<div class="ui">
+  <div class="title" id="projectTitle">VILLA 01</div>
+  <div class="subtitle" id="label">Living Room</div>
+</div>
+
+<!-- FULLSCREEN -->
+<div class="fullscreen-btn" onclick="toggleFullscreen()">
+  FULLSCREEN
+</div>
+
+<!-- 360 -->
 <div id="panorama"></div>
 
 <!-- PLAN -->
 <div id="plan-wrapper">
   <img id="plan" src="plan.png">
 
-  <!-- NODE POSITIONS (plan üzerinde elle ayarlanır) -->
-  <div class="node" style="top:40px; left:60px;" onclick="go('living')"></div>
-  <div class="node" style="top:80px; left:140px;" onclick="go('kitchen')"></div>
-  <div class="node" style="top:140px; left:90px;" onclick="go('garden')"></div>
+  <div class="node living" style="top:40px; left:60px;" onclick="go('living')"></div>
+  <div class="node kitchen" style="top:80px; left:140px;" onclick="go('kitchen')"></div>
+  <div class="node garden" style="top:140px; left:90px;" onclick="go('garden')"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <span class="living" onclick="go('living')">Living</span>
+  <span class="kitchen" onclick="go('kitchen')">Kitchen</span>
+  <span class="garden" onclick="go('garden')">Garden</span>
 </div>
 
 <script>
-/* =========================
-   GLOBAL VIEWER (FIXED)
-========================= */
+
+/* VIEWER */
 window.viewer = pannellum.viewer('panorama', {
 
   default: {
     firstScene: "living",
-    sceneFadeDuration: 800
+    sceneFadeDuration: 800,
+    autoLoad: true,
+    showControls: false
   },
 
   scenes: {
@@ -92,38 +221,76 @@ window.viewer = pannellum.viewer('panorama', {
     living: {
       panorama: "living.jpg",
       hotSpots: [
-        { pitch: 0, yaw: 120, type: "scene", text: "Kitchen", sceneId: "kitchen" },
-        { pitch: 0, yaw: -80, type: "scene", text: "Garden", sceneId: "garden" }
+        { pitch: 0, yaw: 120, type: "scene", sceneId: "kitchen" },
+        { pitch: 0, yaw: -80, type: "scene", sceneId: "garden" }
       ]
     },
 
     kitchen: {
       panorama: "kitchen.jpg",
       hotSpots: [
-        { pitch: 0, yaw: -100, type: "scene", text: "Living", sceneId: "living" }
+        { pitch: 0, yaw: -100, type: "scene", sceneId: "living" }
       ]
     },
 
     garden: {
       panorama: "garden.jpg",
       hotSpots: [
-        { pitch: 0, yaw: 90, type: "scene", text: "Living", sceneId: "living" }
+        { pitch: 0, yaw: 90, type: "scene", sceneId: "living" }
       ]
     }
 
   }
 });
 
-/* =========================
-   SCENE CHANGE FUNCTION
-========================= */
-function go(sceneName) {
-  window.viewer.loadScene(sceneName);
-
-  // UI label update (opsiyonel ama mimari sunum için önemli)
-  document.getElementById("label").innerText =
-    sceneName.charAt(0).toUpperCase() + sceneName.slice(1);
+/* NAVIGATION */
+function go(scene) {
+  window.viewer.loadScene(scene);
+  setActive(scene);
+  setLabel(scene);
 }
+
+/* ACTIVE STATE */
+function setActive(scene) {
+  document.querySelectorAll('.bottom-nav span').forEach(s => {
+    s.classList.remove('active');
+  });
+
+  const active = document.querySelector('.bottom-nav .' + scene);
+  if (active) active.classList.add('active');
+}
+
+/* LABEL */
+function setLabel(scene) {
+  const map = {
+    living: "Living Room",
+    kitchen: "Kitchen",
+    garden: "Garden"
+  };
+
+  document.getElementById('label').innerText = map[scene];
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+/* KEYBOARD SHORTCUT */
+document.addEventListener("keydown", function(e) {
+  if (e.key.toLowerCase() === "f") {
+    toggleFullscreen();
+  }
+});
+
+/* INIT */
+setActive('living');
+setLabel('living');
+
 </script>
 
 </body>
